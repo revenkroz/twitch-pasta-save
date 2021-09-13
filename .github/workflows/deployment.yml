@@ -14,27 +14,25 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 20
+      - run: echo "VER=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
       - run: npm ci
       - run: npm test
+      - run: npm run build
+      - run: |
+          echo https://github.com/$GITHUB_REPOSITORY/tree/$VER > dist/SOURCE_URL.txt
+          npm run version
       - id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ env.VER }}
+          release_name: Release ${{ env.VER }}
           draft: false
           prerelease: false
-      - name: Update extension's meta
-        env:
-          VER: ${{ github.ref }}
-        run: |
-          touch distribution/SOURCE_URL.txt
-          echo https://github.com/$GITHUB_REPOSITORY/tree/$VER > distribution/SOURCE_URL.txt
-          npm run version
       - name: Build project
         run: |
-          (cd distribution && zip -r ../twitch-pasta-saver-${{ github.ref }}.zip *)
+          (cd dist && zip -r ../twitch-pasta-saver-${{ env.VER }}.zip *)
       - name: Upload Release Asset
         id: upload_release_asset
         uses: actions/upload-release-asset@v1
@@ -42,12 +40,12 @@ jobs:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
          upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: ./twitch-pasta-saver-${{ github.ref }}.zip
-         asset_name: twitch-pasta-saver-${{ github.ref }}.zip
+         asset_path: ./twitch-pasta-saver-${{ env.VER }}.zip
+         asset_name: twitch-pasta-saver-${{ env.VER }}.zip
          asset_content_type: application/zip
       - uses: actions/upload-artifact@v2
         with:
-          path: distribution
+          path: dist
 
   Chrome:
     needs: Build
