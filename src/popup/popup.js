@@ -1,15 +1,16 @@
-import storage from '../storage';
-import { getDataFromForm, sendMessage } from '../utils';
+import storage from '~/storage';
+import { getDataFromForm, sendMessage } from '~/utils';
 
 // TODO: check frameworks performance to replace a great part of this file
-
-class TwitchEssentials {
+class TwitchPastaSaver {
   constructor() {
     this.addCommandButton = document.querySelector('#add-command');
     this.buttonsContainer = document.querySelector('#commands');
+  }
 
-    this.setListeners();
-    this.drawButtons();
+  async init() {
+    await this.setListeners();
+    await this.drawButtons();
   }
 
   async drawButtons() {
@@ -18,12 +19,13 @@ class TwitchEssentials {
         el.remove();
       }
     });
+
     const commands = await storage.getCommands();
     commands.forEach((command) => {
-      let item = document.createElement('div');
+      const item = document.createElement('div');
       item.classList.add('commands__item');
-      item.setAttribute('title', command.content.substring(0, 40) + '...');
-      let button = document.createElement('div');
+      item.setAttribute('title', command.content.substring(0, 32) + '...');
+      const button = document.createElement('div');
       button.classList.add('btn', 'p-d');
       button.innerHTML = command.name;
       button.setAttribute('data-id', command.id);
@@ -36,7 +38,7 @@ class TwitchEssentials {
         e.preventDefault();
 
         await storage.removeCommand(command);
-        this.drawButtons();
+        await this.drawButtons();
       });
 
       item.append(button);
@@ -58,7 +60,7 @@ class TwitchEssentials {
 
       const data = getDataFromForm(addCommandForm);
       await storage.addCommand('send', data.name, data.content);
-      this.drawButtons();
+      await this.drawButtons();
 
       addCommandForm.childNodes.forEach((el) => {
         if (!(el instanceof Element)) {
@@ -79,8 +81,8 @@ class TwitchEssentials {
 
 browser.tabs.executeScript({file: "/browser-polyfill.js"}).then(() => {
   browser.tabs.executeScript({file: "/content/content.js"})
-    .then(() => {
-      new TwitchEssentials();
+    .then(async () => {
+      await (new TwitchPastaSaver()).init();
     })
     .catch((error) => {
       console.error(`Failed to execute content script: ${error.message}`)

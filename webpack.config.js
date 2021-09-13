@@ -1,6 +1,6 @@
 const path = require('path');
 const SizePlugin = require('size-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
@@ -11,25 +11,29 @@ module.exports = {
 		'popup/popup': './src/popup/popup',
 	},
 	output: {
-		path: path.join(__dirname, 'distribution'),
+		path: path.join(__dirname, 'dist'),
 		filename: '[name].js'
 	},
 	plugins: [
 		new SizePlugin(),
-		new CopyWebpackPlugin([
-      {
-        from: 'content/*',
-        context: 'src',
-      },
-			{
-				from: '**/*',
-				context: 'src',
-				ignore: ['*.js']
-			},
-			{
-				from: 'node_modules/webextension-polyfill/dist/browser-polyfill.js'
-			}
-		])
+		new CopyPlugin({
+      patterns: [
+        {
+          from: 'content/*',
+          context: 'src',
+        },
+        {
+          from: '**/*',
+          context: 'src',
+          globOptions: {
+            ignore: ['*.js']
+          },
+        },
+        {
+          from: 'node_modules/webextension-polyfill/dist/browser-polyfill.js'
+        }
+      ]
+    }),
 	],
 	optimization: {
 		minimizer: [
@@ -43,5 +47,10 @@ module.exports = {
 				}
 			})
 		]
-	}
+	},
+  resolve: {
+    alias: {
+      '~': path.resolve(__dirname, 'src'),
+    }
+  }
 };

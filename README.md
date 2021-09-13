@@ -1,14 +1,8 @@
-# Twitch Essentials
+# Twitch Pasta Savergit
 
 This extension allows you to add custom buttons/shortcuts to send pasta to a chat or something else.
 
 ![how-to-use](docs/how-to-use.gif)
-
-## Features
-
-- [x] Creating shortcuts to send something to a chat
-- [ ] Creating channels list
-- [ ] Autoclicking points button
 
 ## Installation
 
