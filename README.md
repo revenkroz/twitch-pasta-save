@@ -1,4 +1,4 @@
-# Twitch Pasta Savergit
+# Twitch Pasta Saver
 
 This extension allows you to add custom buttons/shortcuts to send pasta to a chat or something else.
 
@@ -8,7 +8,7 @@ This extension allows you to add custom buttons/shortcuts to send pasta to a cha
 
 ### Google Chrome
 
-* Download [latest release](https://github.com/Revenkroz/twitch-essentials/releases) and unpack it.
+* Download [latest release](https://github.com/revenkroz/twitch-pasta-saver/releases) and unpack it.
 * Open `chrome://extensions/`
 * Enable **Developer Mode** if it wasn't enabled.
 * Click **Load Unpacked** in the top left corner.
@@ -16,7 +16,7 @@ This extension allows you to add custom buttons/shortcuts to send pasta to a cha
 
 ### Mozilla Firefox
 
-* Download [latest release](https://github.com/Revenkroz/twitch-essentials/releases) and unpack it.
+* Download [latest release](https://github.com/revenkroz/twitch-pasta-saver/releases) and unpack it.
 * Open `about:addons`
 * Click on the gear icon, select `Debug add-ons` -> `Load Temporary Add-on...`
 * Select the unpacked directory.
