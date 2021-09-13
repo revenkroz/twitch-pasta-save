@@ -20,7 +20,7 @@ jobs:
       - run: npm run build
       - run: |
           echo https://github.com/$GITHUB_REPOSITORY/tree/$VER > dist/SOURCE_URL.txt
-          npm run version
+          VER=${VER#v} npm run version
       - id: create_release
         uses: actions/create-release@v1
         env:
@@ -47,26 +47,26 @@ jobs:
         with:
           path: dist
 
-  Chrome:
-    needs: Build
-    if: github.event_name == 'workflow_dispatch' || needs.Build.outputs.created
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v2
-      - run: cd artifact && npx chrome-webstore-upload-cli@1 upload --auto-publish
-        env:
-          EXTENSION_ID: ${{ secrets.EXTENSION_ID }}
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
-
-  Firefox:
-    needs: Build
-    if: github.event_name == 'workflow_dispatch' || needs.Build.outputs.created
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v2
-      - run: cd artifact && npx web-ext-submit@4
-        env:
-          WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
-          WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
+#  Chrome:
+#    needs: Build
+#    if: github.event_name == 'workflow_dispatch' || needs.Build.outputs.created
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/download-artifact@v2
+#      - run: cd artifact && npx chrome-webstore-upload-cli@1 upload --auto-publish
+#        env:
+#          EXTENSION_ID: ${{ secrets.EXTENSION_ID }}
+#          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+#          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+#          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+#
+#  Firefox:
+#    needs: Build
+#    if: github.event_name == 'workflow_dispatch' || needs.Build.outputs.created
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/download-artifact@v2
+#      - run: cd artifact && npx web-ext-submit@4
+#        env:
+#          WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
+#          WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}

@@ -1,13 +1,13 @@
 {
-  "name": "Twitch Essentials",
+  "name": "Twitch Pasta Saver",
   "version": "0.0.0",
-  "description": "Twitch needs a bit more buttons to make your life easier",
-  "homepage_url": "https://github.com/Revenkroz/twitch-essentials",
+  "description": "Extension to save pastas and send them to a chat by click",
+  "homepage_url": "https://github.com/revenkroz/twitch-pasta-saver",
   "manifest_version": 2,
   "minimum_chrome_version": "80",
   "applications": {
     "gecko": {
-      "id": "revenkroz@twitch-essentials",
+      "id": "revenkroz@twitch-pasta-saver",
       "strict_min_version": "78.0"
     }
   },
