@@ -29,6 +29,7 @@ jobs:
         env:
           VER: ${{ github.ref }}
         run: |
+          touch distribution/SOURCE_URL.txt
           echo https://github.com/$GITHUB_REPOSITORY/tree/$VER > distribution/SOURCE_URL.txt
           npm run version
       - name: Build project
